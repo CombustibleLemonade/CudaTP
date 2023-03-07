@@ -1,0 +1,55 @@
+#include <iostream>
+
+#include "prover/cudaProver.h"
+#include "parser/parser.h"
+#include "learner/learner.h"
+#include "learner/structures/tree.h"
+#include "learner/nodes/convolution.h"
+#include "learner/nodes/softmax.h"
+#include "learner/nodes/crossentropy.h"
+#include "learner/nodes/dense.h"
+
+__global__ void run_network(Dense d, Softmax sm, Crossentropy ce) {
+    int warp_index = threadIdx.x % 32;
+
+    for (int i = 0; i < 100000; i++){
+        d.feed_forward();
+        sm.feed_forward();
+        ce.feed_forward();
+
+        ce.output_weights[0] = ce.output[0];
+
+        ce.backpropagate();
+        sm.backpropagate();
+        d.backpropagate();
+
+        // if (warp_index == 0) printf("OOOutput: %f\n", ce.output[0]);
+
+        d.apply_delta(1.0);
+    }
+}
+
+int main() {
+
+    Dense d(32, 32);
+    Softmax sm(&d);
+    float* probabilities = new float[sm.output.length()];
+    Crossentropy ce(&sm, probabilities);
+
+    d.input[0] = 1.0;
+    d.weights[0] = 1.0;
+    probabilities[0] = 1.0;
+
+    std::cout << "Start moving to GPU" << std::endl;
+    sm.move_to_gpu();
+
+    std::cout << "Start GPU warp" << std::endl;
+    run_network<<<1, 32>>>(d, sm, ce);
+
+    cudaDeviceSynchronize();
+
+    // call_softmax_cuda();
+    // CudaTheorem* th = parse_file("data/problems/l1_aff_4.th");
+    // th->fill_matrix();
+    // start_prover(th);
+}

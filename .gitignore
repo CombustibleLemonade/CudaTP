@@ -1,0 +1,13 @@
+data/*
+results/*
+.vscode/*
+*.o
+benchmark_cpu
+benchmark_gpu
+benchmark_gpu.sh
+backpropagate
+GPU_power.log
+.sconsign.dblite
+callgrind.out.*
+logfile
+__pycache__/*

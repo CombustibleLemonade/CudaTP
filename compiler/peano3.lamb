@@ -1,0 +1,18 @@
+-EQ _x _x
+EQ _x _y | -EQ _y _x
+EQ _x _y | EQ _f _g | -EQ (_f _x) (_g _y)
+EQ _x _y | EQ _y _z | -EQ _x _z
+EQ _x _y | _x | -_y
+-EQ _x _y | _x | _y
+-EQ _x _y | -_x | -_y
+-NAT 0
+NAT _x | -NAT (S _x)
+-_x | -IMPLIES _x _y
+_y | -IMPLIES _x _y
+_f 0 | IMPLIES (_f x) (_f (S x)) | -_f _x
+-EQ (PLUS _x 0) _x
+-EQ (PLUS _x (S _y)) (S (PLUS _x _y))
+-EQ (DUPLICATE _f _x) (_f _x _x)
+-EQ (SWAP _x _y) (_y _x)
+-EQ (ASSOCIATE _f _g _x) (_f (_g _x))
+EQ (EQ (PLUS 0 x) x) (_f x x)

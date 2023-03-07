@@ -1,0 +1,12 @@
+EQ _x _y | -EQ _y _x
+EQ _x _y | -EQ (_f _x) (_f _y)
+EQ _x _y | EQ _y _z | -EQ _x _z
+-NAT 0
+NAT _x | -NAT (S _x)
+IMPLIES _x _y | _x | -_y
+NAT _x | _f 0 | IMPLIES (_f _y) (f (S _y)) | -_f _x
+-EQ (PLUS _x 0) _x
+-EQ (PLUS _x (S _y)) (S (PLUS _x _y)) 
+-EQ (TIMES _x 0) 0
+-EQ (TIMES _x (S _y)) (PLUS (TIMES _x _y) _x)
+EQ (PLUS _x _y) (PLUS _y _x)
