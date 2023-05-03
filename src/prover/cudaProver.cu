@@ -432,6 +432,8 @@ __host__ __device__ bool CudaProofState::extend(CudaLiteral* l) {
     int literal = pick_next_literal();
     mutation.head = &theorem->clause_list.clauses[mutation.head->clause_idx].literals[literal];
 
+    inferences++;
+
     return true;
 }
 
@@ -635,7 +637,7 @@ __global__ void proof_thread(CudaTheorem* t, curandState* state_list, CudaProofS
     p->theorem = t;
     p->random = state;
 
-    for (int i = 0; i < 32 && p != nullptr; i++) {
+    for (int i = 0; i < 3200 && p != nullptr; i++) {
         bool solved = p->prove();
 
         if (solved) {
@@ -659,6 +661,8 @@ __global__ void proof_thread(CudaTheorem* t, curandState* state_list, CudaProofS
             p->undo();
         }
     }
+
+    printf("Inferences: %i \n", p->inferences);
 }
 
 ComputationResult* start_prover(CudaTheorem* t) {

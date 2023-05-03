@@ -9,6 +9,7 @@ uint64_t time_since_epoch_milliseconds() {
 
 std::vector<std::string> problems{
     "l103_sincos10", 
+    "t56_topgen_1",
     "t155_xreal_1", 
     "t5_jordan5a", 
     "t30_borsuk_4", 

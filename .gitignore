@@ -5,6 +5,7 @@ results/*
 benchmark_cpu
 benchmark_gpu
 benchmark_gpu.sh
+solve_problem
 backpropagate
 GPU_power.log
 .sconsign.dblite

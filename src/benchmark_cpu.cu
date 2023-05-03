@@ -15,7 +15,7 @@ void run_benchmark(std::string path) {
     CudaProofState state;
     state.theorem = theorem;
 
-    for (int i = 0; i < 2048; i++) {
+    for (int i = 0; i < 8192; i++) {
         state.prove();
 
         while (state.mutation.log.action_length != 0) {

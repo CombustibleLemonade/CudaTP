@@ -173,6 +173,7 @@ public:
 
 class Solution{
 public:
+    int inferences;
     int length;
     SolutionStep steps[CUDA_MAX_ACTIONS];
 };
@@ -191,8 +192,8 @@ public:
 
     curandState* random;
 
-    int total_inferences = 0;
     int solve_count = 0;
+    int inferences = 0;
 
     __host__ __device__ int pick_next_literal();
 
@@ -214,6 +215,7 @@ public:
     Solution solutions[BLOCK_COUNT * THREAD_PER_BLOCK];
     int solution_counts[BLOCK_COUNT * THREAD_PER_BLOCK];
     int total_solutions;
+    int total_inferences;
 };
 
 class ProofConfig{

@@ -19,6 +19,10 @@ int main(int argc, char *argv[]) {
 
 	std::string path = "data/weights/";
 
+    if (argc > 2) {
+        path = argv[2];
+    }
+
 	DIR *dir = opendir(path.c_str());
 	struct dirent *diread;
 
@@ -28,8 +32,12 @@ int main(int argc, char *argv[]) {
 			if (name == ".") continue;
 			if (name == "..") continue;
             
-            name.erase(name.size() - 5);
-      
+            if (name.find(".th")) {
+                name.erase(name.size() - 3);
+            } else {
+                name.erase(name.size() - 5);
+            }
+            
             try {
                 ComputationResult* result = approximate_probabilities(name, probabilities_folder_path);
                 delete result;
@@ -38,27 +46,4 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    
-    // // cudaMemcpyToSymbol("a", &ah, sizeof(float *), size_t(0),cudaMemcpyHostToDevice);
-
-    // ProbabilityMatrix matrix("data/probabilities/t82_gfacirc1.mtrx"); 
-
-    // // CudaTheorem* th = parse_file("data/problems/l1_aff_4.th");
-    // CudaTheorem* th = parse_file("data/problems/t82_gfacirc1.th");
-    // std::cout << "Filling matrix" << std::endl;
-    // th->fill_matrix();
-
-    // TheoremStructure structure(th, &matrix);
-    // StructureScheduler scheduler;
-
-    // std::cout << "Adding structure" << std::endl;
-    // scheduler.add_structure(&structure);
-
-
-    // cudaDeviceSynchronize();
-
-    // std::cout << "Starting training" << std::endl;
-    // scheduler.start_batch();
-
-    // std::cout << "Done" << std::endl;
 }
